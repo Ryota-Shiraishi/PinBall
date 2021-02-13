@@ -29,21 +29,22 @@ public class FripperController : MonoBehaviour
         if (Input.touchSupported)
         {
             //タッチしているか判定
-            if (Input.touchCount > 0)
+            switch (Input.touchCount)
             {
-                Touch touch = Input.GetTouch(0);
-                if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
-                {
-                    SetAngle(this.flickAngle);
-                }
-                if (touch.phase == TouchPhase.Ended)
-                {
+                case 0:
                     SetAngle(this.defaultAngle);
-                }
-            }
-            else
-            {
-                SetAngle(this.defaultAngle);
+                    break;
+                case 1:
+                    Touch touch = Input.GetTouch(0);
+                    float touchPos = touch.position.x;
+                    if (touchPos == 360 || (touchPos < 360 & tag == "LeftFripperTag")|| (touchPos > 360 & tag == "RightFripperTag"))
+                    {
+                        SetAngle(this.flickAngle);
+                    }
+                    break;
+                default:
+                    SetAngle(this.flickAngle);
+                    break;
             }
         }
         else
